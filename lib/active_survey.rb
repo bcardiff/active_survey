@@ -1,0 +1,2 @@
+module ActiveSurvey
+end
