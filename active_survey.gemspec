@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = ActiveSurvey::VERSION
   s.authors     = ["Brian J. Cardiff"]
   s.email       = ["bcardiff@gmail.com"]
-  s.homepage    = "TODO"
+  s.homepage    = "http://github.com/bcardiff/active_survey"
   s.summary     = "Define surveys or questionnaires using a DSL over activerecord models."
   s.description = "Define surveys or questionnaires using a DSL over activerecord models."
 
