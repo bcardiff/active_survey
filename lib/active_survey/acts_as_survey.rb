@@ -1,3 +1,4 @@
+require 'active_survey/text_item'
 require 'active_survey/question'
 
 module ActiveSurvey
@@ -20,6 +21,10 @@ module ActiveSurvey
       def acts_as_survey
         @is_survey = true
         yield
+      end
+
+      def text(*options)
+        add_survey_item TextItem.new(*options)
       end
 
       def q(*options)

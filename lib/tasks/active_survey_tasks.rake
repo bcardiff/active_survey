@@ -1,11 +1,14 @@
+migrate_db = ENV["db"] || "yes"
+
 namespace :survey do
-  desc "Generates activerecord migrations for survey models"
+
+  desc "Generates activerecord migrations for survey models. db=no to not execute migrations on database."
   task :migrate => [:'db:migrate', :environment] do 
     get_surveys().each do |model|
       add_missing_columns(model)
     end
 
-    Rake::Task["db:migrate"].execute
+    Rake::Task["db:migrate"].execute if migrate_db == 'yes'
   end
 
   def load_models
@@ -22,8 +25,10 @@ namespace :survey do
   def add_missing_columns(model)
     columns_to_add = []
     model.survey.each do |item|
-      if !model.column_names.include?(item.name.to_s)
-        columns_to_add << {name: item.name, type: item.type}
+      if item.is_a? ActiveSurvey::Question
+        if !model.column_names.include?(item.name.to_s)
+          columns_to_add << {name: item.name, type: item.type}
+        end
       end
     end
 
