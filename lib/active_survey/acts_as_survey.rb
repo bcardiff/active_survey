@@ -28,7 +28,17 @@ module ActiveSurvey
       end
 
       def q(*options)
-        add_survey_item Question.new(*options)
+        item = Question.new(*options)
+        add_survey_item item
+
+        class_eval <<-EOV
+          # only add to attr_accessible
+          # if the class has some mass_assignment_protection
+
+          if defined?(accessible_attributes) and !accessible_attributes.blank?
+            attr_accessible :#{item.name}
+          end
+        EOV
       end
 
       private
