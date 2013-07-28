@@ -1,5 +1,6 @@
 require 'active_survey/text_item'
 require 'active_survey/question'
+require 'active_survey/section'
 
 module ActiveSurvey
   module ActsAsSurvey
@@ -20,6 +21,8 @@ module ActiveSurvey
 
       def acts_as_survey
         @is_survey = true
+        @survey = []
+        @survey_context = [@survey]
         yield
       end
 
@@ -41,11 +44,18 @@ module ActiveSurvey
         EOV
       end
 
+      def section(*options)
+        item = Section.new(*options)
+        add_survey_item item
+        @survey_context << item.items
+        yield
+        @survey_context.pop
+      end
+
       private
 
       def add_survey_item(item)
-        @survey ||= []
-        @survey << item
+        @survey_context.last << item
       end
 
     end

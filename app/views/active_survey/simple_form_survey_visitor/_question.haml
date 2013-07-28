@@ -1,0 +1,6 @@
+- if item.unit.nil?
+  = f.input item.name, label: item.text
+- else
+  = f.input item.name, label: item.text, :wrapper => :append do
+    = f.input_field item.name
+    %span.add-on= item.unit

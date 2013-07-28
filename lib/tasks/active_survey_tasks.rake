@@ -23,14 +23,8 @@ namespace :survey do
   end
 
   def add_missing_columns(model)
-    columns_to_add = []
-    model.survey.each do |item|
-      if item.is_a? ActiveSurvey::Question
-        if !model.column_names.include?(item.name.to_s)
-          columns_to_add << {name: item.name, type: item.type}
-        end
-      end
-    end
+    schema_generator = ActiveSurvey::SchemaGeneratorVisitor.new model
+    columns_to_add = schema_generator.columns_to_add
 
     if !columns_to_add.empty?
       puts "generating migrations for #{model.model_name}"
